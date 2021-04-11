@@ -19,6 +19,7 @@ public class Floodfill {
 		if (start.x() >= 0 && start.x() < original.width() && start.y() >= 0 && start.y() < original.height()) {
 			Grid<Color> copy = getGridCopy(original);
 			Color replacingColor = original.get(startX, startY);
+
 			Queue<Position> left = new LinkedList<>();
 			left.add(new Position(startX, startY));
 			if (!replacingColor.equals(color)) {
@@ -26,22 +27,7 @@ public class Floodfill {
 					Position at = left.poll();
 					if (at.x() >= 0 && at.x() < copy.width() && at.y() >= 0 && at.y() < copy.height()) {
 						copy.set(color, at.x(), at.y());
-						Collection<Position> neighbors = asList(
-								new Position(at.x() + 1, at.y()),
-								new Position(at.x(), at.y() + 1),
-								new Position(at.x() - 1, at.y()),
-								new Position(at.x(), at.y() - 1)
-						);
-						Collection<Position> uncoloredNeighbors = new ArrayList<>();
-						for (Position position : neighbors) {
-							if (position.x() >= 0 && position.x() < copy.width() && position.y() >= 0 && position.y() < copy.height()) {
-								Color colorAtPosition = copy.get(position.x(), position.y());
-								if (colorAtPosition.equals(replacingColor)) {
-									uncoloredNeighbors.add(position);
-								}
-							}
-						}
-
+						Collection<Position> uncoloredNeighbors = getUncoloredNeighbors(copy, replacingColor, at);
 						left.addAll(uncoloredNeighbors);
 					}
 				}
@@ -50,6 +36,25 @@ public class Floodfill {
 		} else {
 			throw new IndexOutOfBoundsException("Got " + new Position(startX, startY) + " but grid is only " + original.width() + "x" + original.height());
 		}
+	}
+
+	private Collection<Position> getUncoloredNeighbors(Grid<Color> copy, Color replacingColor, Position at) {
+		Collection<Position> neighbors = asList(
+				new Position(at.x() + 1, at.y()),
+				new Position(at.x(), at.y() + 1),
+				new Position(at.x() - 1, at.y()),
+				new Position(at.x(), at.y() - 1)
+		);
+		Collection<Position> uncoloredNeighbors = new ArrayList<>();
+		for (Position position : neighbors) {
+			if (position.x() >= 0 && position.x() < copy.width() && position.y() >= 0 && position.y() < copy.height()) {
+				Color colorAtPosition = copy.get(position.x(), position.y());
+				if (colorAtPosition.equals(replacingColor)) {
+					uncoloredNeighbors.add(position);
+				}
+			}
+		}
+		return uncoloredNeighbors;
 	}
 
 	private Grid<Color> getGridCopy(Grid<Color> original) {
