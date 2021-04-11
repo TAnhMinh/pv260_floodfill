@@ -1,6 +1,6 @@
 package practicalrefactorings.equationsolver;
 
-public abstract class SymbolNode extends Node{
+public class SymbolNode extends Node{
     private char operator;
 
     public SymbolNode(char symbol) {
