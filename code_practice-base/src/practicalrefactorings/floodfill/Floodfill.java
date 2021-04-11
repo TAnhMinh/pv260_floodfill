@@ -25,11 +25,11 @@ public class Floodfill {
 		if (!replacingColor.equals(color)) {
 			while (!left.isEmpty()) {
 				Position at = left.poll();
-				if (at.x() >= 0 && at.x() < copy.width() && at.y() >= 0 && at.y() < copy.height()) {
-					copy.set(color, at.x(), at.y());
-					Collection<Position> uncoloredNeighbors = getUncoloredNeighbors(copy, replacingColor, at);
-					left.addAll(uncoloredNeighbors);
-				}
+//				if (at.x() >= 0 && at.x() < copy.width() && at.y() >= 0 && at.y() < copy.height()) {
+				copy.set(color, at.x(), at.y());
+				Collection<Position> uncoloredNeighbors = getUncoloredNeighbors(copy, replacingColor, at);
+				left.addAll(uncoloredNeighbors);
+//				}
 			}
 		}
 		return copy;
