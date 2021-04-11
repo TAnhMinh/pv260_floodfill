@@ -16,26 +16,26 @@ public class Floodfill {
 
 	public Grid<Color> fillAt(Grid<Color> original, int startX, int startY, Color color) {
 		Position start = new Position(startX, startY);
-		if (start.x() >= 0 && start.x() < original.width() && start.y() >= 0 && start.y() < original.height()) {
-			Grid<Color> copy = getGridCopy(original);
-			Color replacingColor = original.get(startX, startY);
+//		if (start.x() >= 0 && start.x() < original.width() && start.y() >= 0 && start.y() < original.height()) {
+		Grid<Color> copy = getGridCopy(original);
+		Color replacingColor = original.get(startX, startY);
 
-			Queue<Position> left = new LinkedList<>();
-			left.add(new Position(startX, startY));
-			if (!replacingColor.equals(color)) {
-				while (!left.isEmpty()) {
-					Position at = left.poll();
-					if (at.x() >= 0 && at.x() < copy.width() && at.y() >= 0 && at.y() < copy.height()) {
-						copy.set(color, at.x(), at.y());
-						Collection<Position> uncoloredNeighbors = getUncoloredNeighbors(copy, replacingColor, at);
-						left.addAll(uncoloredNeighbors);
-					}
+		Queue<Position> left = new LinkedList<>();
+		left.add(new Position(startX, startY));
+		if (!replacingColor.equals(color)) {
+			while (!left.isEmpty()) {
+				Position at = left.poll();
+				if (at.x() >= 0 && at.x() < copy.width() && at.y() >= 0 && at.y() < copy.height()) {
+					copy.set(color, at.x(), at.y());
+					Collection<Position> uncoloredNeighbors = getUncoloredNeighbors(copy, replacingColor, at);
+					left.addAll(uncoloredNeighbors);
 				}
 			}
-			return copy;
-		} else {
-			throw new IndexOutOfBoundsException("Got " + new Position(startX, startY) + " but grid is only " + original.width() + "x" + original.height());
 		}
+		return copy;
+//		} else {
+//			throw new IndexOutOfBoundsException("Got " + new Position(startX, startY) + " but grid is only " + original.width() + "x" + original.height());
+//		}
 	}
 
 	private Collection<Position> getUncoloredNeighbors(Grid<Color> copy, Color replacingColor, Position at) {
